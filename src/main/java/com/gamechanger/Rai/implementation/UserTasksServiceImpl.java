@@ -6,6 +6,8 @@ import com.gamechanger.Rai.service.UserTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserTasksServiceImpl implements UserTasksService {
 
@@ -15,4 +17,10 @@ public class UserTasksServiceImpl implements UserTasksService {
     public void saveUserTasks(UserTasksEntity userTasksEntity) {
         userTasksRepository.save(userTasksEntity);
     }
+
+    @Override
+    public List<Long> getTasksById(Long id) {
+        return userTasksRepository.getTasksById(id);
+    }
+
 }
