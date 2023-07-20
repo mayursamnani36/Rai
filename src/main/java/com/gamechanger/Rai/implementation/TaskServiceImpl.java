@@ -12,7 +12,12 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     TaskRepository taskRepository;
     @Override
-    public void saveTask(TaskEntity task) {
+    public void createTask(TaskEntity task) {
         taskRepository.save(task);
+    }
+
+    @Override
+    public TaskEntity getTaskByTaskId(Long taskId) {
+        return taskRepository.findById(taskId).orElse(null);
     }
 }

@@ -20,4 +20,5 @@ public class TaskEntity {
     private String description;
     private String points;
     private Long assignee;
+    private String state;
 }

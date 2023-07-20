@@ -1,5 +1,6 @@
 package com.gamechanger.Rai.implementation;
 
+import com.gamechanger.Rai.entity.TaskEntity;
 import com.gamechanger.Rai.entity.UserTasksEntity;
 import com.gamechanger.Rai.repository.UserTasksRepository;
 import com.gamechanger.Rai.service.UserTasksService;
@@ -19,7 +20,7 @@ public class UserTasksServiceImpl implements UserTasksService {
     }
 
     @Override
-    public List<Long> getTasksById(Long id) {
+    public List<Long> getTasksByUserId(Long id) {
         return userTasksRepository.getTasksById(id);
     }
 
