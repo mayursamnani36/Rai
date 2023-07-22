@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserTasksEntity {
+public class UserBoardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long userId;
-    private Long taskId;
+    private String board;
 }

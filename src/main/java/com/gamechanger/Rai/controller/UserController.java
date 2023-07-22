@@ -6,7 +6,6 @@ import com.gamechanger.Rai.service.TaskService;
 import com.gamechanger.Rai.service.UserService;
 import com.gamechanger.Rai.service.UserTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,8 +22,8 @@ public class UserController {
     UserTasksService userTasksService;
 
     @PostMapping("/createUser")
-    public String setUser(@RequestBody UserEntity user){
-        userService.saveUser(user);
+    public String createUser(@RequestBody UserEntity user){
+        userService.createUser(user);
         return "User Saved Successfully";
     }
     @GetMapping("/getTasksByUserId")
