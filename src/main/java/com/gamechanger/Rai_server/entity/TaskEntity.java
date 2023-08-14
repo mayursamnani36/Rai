@@ -1,12 +1,11 @@
 package com.gamechanger.Rai_server.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -21,6 +20,15 @@ public class TaskEntity {
     private String points;
     private Long assignee;
     private String state;
+    private String priority;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+    @PrePersist
+    public void prePersist() {createdAt = LocalDateTime.now(); updatedAt = LocalDateTime.now();}
+    @PreUpdate
+    public void preUpdate() {updatedAt = LocalDateTime.now();}
 
     public TaskEntity(TaskEntity task) {
         this.title = task.getTitle();
@@ -28,5 +36,6 @@ public class TaskEntity {
         this.points = task.getPoints();
         this.assignee = task.getAssignee();
         this.state = task.getState();
+        this.priority = task.getPriority();
     }
 }
