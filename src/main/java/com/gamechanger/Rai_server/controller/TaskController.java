@@ -5,6 +5,9 @@ import com.gamechanger.Rai_server.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 public class TaskController {
 
@@ -27,5 +30,15 @@ public class TaskController {
         TaskEntity task = getTaskByTaskId(taskId);
         TaskEntity clonedTask = new TaskEntity(task);
         return createTask(clonedTask);
+    }
+    @GetMapping("/getTasksByUserId")
+    public List<TaskEntity> getTasksByUserId(@RequestParam Long userId){
+        List<Long> taskList = taskService.getTasksByUserId(userId);
+        List<TaskEntity> userTasks = new ArrayList<>();
+        for(Long x : taskList){
+            TaskEntity t = taskService.getTaskByTaskId(x);
+            userTasks.add(t);
+        }
+        return userTasks;
     }
 }

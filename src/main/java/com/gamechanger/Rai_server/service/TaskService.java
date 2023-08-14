@@ -7,5 +7,5 @@ import java.util.List;
 public interface TaskService {
     void createTask(TaskEntity task);
     TaskEntity getTaskByTaskId(Long taskId);
-    List<Long> getTasksByUserId(Long id);
+    List<Long> getTasksByUserId(Long userId);
 }

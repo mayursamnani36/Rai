@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
-    @Query(value = "SELECT id FROM task_entity WHERE assignee = :id", nativeQuery = true)
-    List<Long> getTasksByUserId(Long id);
+    @Query(value = "SELECT id FROM task_entity WHERE assignee = :userId", nativeQuery = true)
+    List<Long> getTasksByUserId(Long userId);
 }
