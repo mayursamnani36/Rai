@@ -21,4 +21,12 @@ public class TaskEntity {
     private String points;
     private Long assignee;
     private String state;
+
+    public TaskEntity(TaskEntity task) {
+        this.title = task.getTitle();
+        this.description = task.getDescription();
+        this.points = task.getPoints();
+        this.assignee = task.getAssignee();
+        this.state = task.getState();
+    }
 }

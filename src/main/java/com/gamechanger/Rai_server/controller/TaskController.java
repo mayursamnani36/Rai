@@ -4,6 +4,7 @@ import com.gamechanger.Rai_server.entity.TaskEntity;
 import com.gamechanger.Rai_server.entity.UserTasksEntity;
 import com.gamechanger.Rai_server.service.TaskService;
 import com.gamechanger.Rai_server.service.UserTasksService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,9 @@ public class TaskController {
     public String createTask(@RequestBody TaskEntity task){
         if(task.getId()==null){
             taskService.createTask(task);
-            UserTasksEntity userTasksEntity = new UserTasksEntity(task.getAssignee(), task.getId(), task.getAssignee()+task.getId());
+            UserTasksEntity userTasksEntity = new UserTasksEntity();
+            userTasksEntity.setTaskId(task.getId());
+            userTasksEntity.setUserId(task.getAssignee());
             userTasksService.saveUserTasks(userTasksEntity);
             return "Task has been created with title "+ task.getTitle() + " for user with id " + task.getAssignee();
         }
@@ -32,5 +35,12 @@ public class TaskController {
     @GetMapping("/getTaskByTaskId")
     public TaskEntity getTaskByTaskId(@RequestParam Long taskId){
         return taskService.getTaskByTaskId(taskId);
+    }
+
+    @PostMapping("/cloneTask/{taskId}")
+    public String cloneTask(@PathVariable("taskId") Long taskId){
+        TaskEntity task = getTaskByTaskId(taskId);
+        TaskEntity clonedTask = new TaskEntity(task);
+        return createTask(clonedTask);
     }
 }
