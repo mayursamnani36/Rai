@@ -1,10 +1,7 @@
 package com.gamechanger.Rai_server.controller;
 
 import com.gamechanger.Rai_server.entity.TaskEntity;
-import com.gamechanger.Rai_server.entity.UserTasksEntity;
 import com.gamechanger.Rai_server.service.TaskService;
-import com.gamechanger.Rai_server.service.UserTasksService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,23 +11,11 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
-    @Autowired
-    UserTasksService userTasksService;
-
     @PostMapping("/createTask")
     public String createTask(@RequestBody TaskEntity task){
-        if(task.getId()==null){
-            taskService.createTask(task);
-            UserTasksEntity userTasksEntity = new UserTasksEntity();
-            userTasksEntity.setTaskId(task.getId());
-            userTasksEntity.setUserId(task.getAssignee());
-            userTasksService.saveUserTasks(userTasksEntity);
-            return "Task has been created with title "+ task.getTitle() + " for user with id " + task.getAssignee();
-        }
-        else {
-            taskService.createTask(task);
-            return "Task updated";
-        }
+        Long currentId = task.getId();
+        taskService.createTask(task);
+        return currentId==null ? "Task has been created with title "+ task.getTitle() + " for user with id " + task.getAssignee():"Task updated";
     }
     @GetMapping("/getTaskByTaskId")
     public TaskEntity getTaskByTaskId(@RequestParam Long taskId){

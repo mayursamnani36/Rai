@@ -4,7 +4,6 @@ import com.gamechanger.Rai_server.entity.TaskEntity;
 import com.gamechanger.Rai_server.entity.UserEntity;
 import com.gamechanger.Rai_server.service.TaskService;
 import com.gamechanger.Rai_server.service.UserService;
-import com.gamechanger.Rai_server.service.UserTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +17,6 @@ public class UserController {
     UserService userService;
     @Autowired
     TaskService taskService;
-    @Autowired
-    UserTasksService userTasksService;
 
     @PostMapping("/createUser")
     public String createUser(@RequestBody UserEntity user){
@@ -28,7 +25,7 @@ public class UserController {
     }
     @GetMapping("/getTasksByUserId")
     public List<TaskEntity> getTasksByUserId(@RequestParam Long userId){
-       List<Long> taskList = userTasksService.getTasksByUserId(userId);
+       List<Long> taskList = taskService.getTasksByUserId(userId);
        List<TaskEntity> userTasks = new ArrayList<>();
        for(Long x : taskList){
            TaskEntity t = taskService.getTaskByTaskId(x);

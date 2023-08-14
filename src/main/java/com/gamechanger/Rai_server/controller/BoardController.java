@@ -24,6 +24,7 @@ public class BoardController {
         return name + " board created.";
     }
     @PostMapping("/addUsersToBoard")
+    //TODO: check if board exists or users exists
     public String addUsersToBoard(@RequestBody AddUserToBoardDTO body){
         userBoardService.addUsersToBoard(body);
         return "Users Added to Board " + body.getBoard();

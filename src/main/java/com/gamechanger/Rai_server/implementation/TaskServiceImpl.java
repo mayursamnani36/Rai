@@ -6,6 +6,8 @@ import com.gamechanger.Rai_server.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskServiceImpl implements TaskService {
 
@@ -19,5 +21,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskEntity getTaskByTaskId(Long taskId) {
         return taskRepository.findById(taskId).orElse(null);
+    }
+
+    @Override
+    public List<Long> getTasksByUserId(Long id) {
+        return taskRepository.getTasksByUserId(id);
     }
 }
