@@ -5,16 +5,18 @@ import com.gamechanger.rai_server.entity.UserBoardEntity;
 import com.gamechanger.rai_server.repository.UserBoardRepository;
 import com.gamechanger.rai_server.service.UserBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Primary
 public class UserBoardServiceImpl implements UserBoardService {
 
     @Autowired
-    UserBoardRepository userBoardRepository;
+    private UserBoardRepository userBoardRepository;
     @Override
     public void addUsersToBoard(AddUserToBoardDTO body) {
         String board = body.getBoard();

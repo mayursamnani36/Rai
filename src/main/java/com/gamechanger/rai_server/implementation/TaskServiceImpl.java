@@ -4,15 +4,17 @@ import com.gamechanger.rai_server.entity.TaskEntity;
 import com.gamechanger.rai_server.repository.TaskRepository;
 import com.gamechanger.rai_server.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Primary
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
-    TaskRepository taskRepository;
+    private TaskRepository taskRepository;
     @Override
     public void createTask(TaskEntity task) {
         taskRepository.save(task);

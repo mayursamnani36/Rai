@@ -12,7 +12,7 @@ import java.util.List;
 public class CommentController {
 
     @Autowired
-    CommentService commentService;
+    private CommentService commentService;
 
     @PostMapping("/addComment")
     public String addComment(@RequestBody AddCommentDTO addCommentDTO){

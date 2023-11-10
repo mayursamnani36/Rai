@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 public class BoardController {
     @Autowired
-    BoardService boardService;
+    private BoardService boardService;
     @Autowired
     UserBoardService userBoardService;
     @PostMapping("/createBoard")
