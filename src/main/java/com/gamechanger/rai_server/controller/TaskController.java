@@ -24,8 +24,8 @@ public class TaskController {
         return taskService.getTaskByTaskId(taskId);
     }
 
-    @PostMapping("/cloneTask/{taskId}")
-    public String cloneTask(@PathVariable("taskId") Long taskId){
+    @PostMapping("/cloneTask")
+    public String cloneTask(@RequestParam Long taskId){
         TaskEntity task = getTaskByTaskId(taskId);
         TaskEntity clonedTask = new TaskEntity(task);
         return createTask(clonedTask);
