@@ -13,7 +13,18 @@ public class UserController {
 
     @PostMapping("/createUser")
     public String createUser(@RequestBody UserEntity user){
-        userService.createUser(user);
-        return "User Saved Successfully with username " + user.getUserName();
+        try{
+            UserEntity dbUser = userService.findUserByUsername(user.getUserName());
+            if(dbUser == null){
+                userService.createUser(user);
+                return "User Saved Successfully with username " + user.getUserName();
+            }
+            else{
+                throw new Exception("User with username " + user.getUserName() + " already exists");
+            }
+        }
+        catch (Exception ex){
+            return ex.getMessage();
+        }
     }
 }
