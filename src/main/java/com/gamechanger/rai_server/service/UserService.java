@@ -6,4 +6,6 @@ public interface UserService {
     void createUser(UserEntity user);
 
     UserEntity findUserByUsername(String userName);
+
+    UserEntity findUserById(Long id);
 }

@@ -12,10 +12,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RequestValidator requestValidator;
+
     @PostMapping("/createUser")
     public String createUser(@RequestBody UserEntity user){
         try{
-            if(!RequestValidator.validateUser(user)){
+            if(!requestValidator.validateUser(user)){
                 throw new Exception("Please Enter a valid Request with username size between 4 to 10 and password size greater than 8");
             }
             UserEntity dbUser = userService.findUserByUsername(user.getUserName());
