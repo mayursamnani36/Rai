@@ -4,6 +4,7 @@ import com.gamechanger.rai_server.dto.AddUserToBoardDTO;
 import com.gamechanger.rai_server.entity.BoardEntity;
 import com.gamechanger.rai_server.service.BoardService;
 import com.gamechanger.rai_server.service.UserBoardService;
+import com.gamechanger.rai_server.utils.RequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +16,30 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
     @Autowired
-    UserBoardService userBoardService;
+    private UserBoardService userBoardService;
+    @Autowired
+    private RequestValidator requestValidator;
+
     @PostMapping("/createBoard")
-    public String createBoard(@RequestBody String name) {
+    public String createBoard(@RequestBody String title) {
+        if(title.isEmpty()){return "Empty title";}
         BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setTitle(name);
+        boardEntity.setTitle(title);
         boardService.saveBoard(boardEntity);
-        return name + " board created.";
+        return title + " board created.";
     }
     @PostMapping("/addUsersToBoard")
-    //TODO: check if board exists or users exists
     public String addUsersToBoard(@RequestBody AddUserToBoardDTO body){
-        userBoardService.addUsersToBoard(body);
-        return "Users Added to Board " + body.getBoard();
+        try{
+            if(!requestValidator.validateUserToBoard(body)){
+                throw new Exception("Invalid body");
+            }
+            userBoardService.addUsersToBoard(body);
+            return "Users Added to Board " + body.getBoard();
+        }
+        catch (Exception ex){
+            return ex.getMessage();
+        }
     }
     @GetMapping("/getBoards")
     public List<BoardEntity> getBoards(){

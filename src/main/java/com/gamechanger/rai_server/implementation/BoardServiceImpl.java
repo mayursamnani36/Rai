@@ -24,4 +24,11 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardEntity> getBoards() {
         return boardRepository.findAll();
     }
+
+    @Override
+    public BoardEntity getBoardByTitle(String title) {
+        return boardRepository.getBoardBytitle(title);
+    }
+
+
 }

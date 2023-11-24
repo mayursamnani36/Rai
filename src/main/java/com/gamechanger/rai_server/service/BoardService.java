@@ -8,4 +8,6 @@ public interface BoardService {
     void saveBoard(BoardEntity boardEntity);
 
     List<BoardEntity> getBoards();
+
+    BoardEntity getBoardByTitle(String title);
 }
