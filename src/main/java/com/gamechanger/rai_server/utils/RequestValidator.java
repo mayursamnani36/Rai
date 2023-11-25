@@ -24,6 +24,7 @@ public class RequestValidator {
     private BoardService boardService;
 
     public boolean validateUser(UserEntity user){
+        // Unique username check is done in UserEntity class
         String userName = user.getUserName();
         String password = user.getPassword();
         return userName.length() >= 4 && userName.length() <= 10 && password.length() >= 8;

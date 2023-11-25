@@ -22,11 +22,18 @@ public class BoardController {
 
     @PostMapping("/createBoard")
     public String createBoard(@RequestBody String title) {
-        if(title.isEmpty()){return "Empty title";}
-        BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setTitle(title);
-        boardService.saveBoard(boardEntity);
-        return title + " board created.";
+        try {
+            if (title.isEmpty()) {
+                return "Empty title";
+            }
+            BoardEntity boardEntity = new BoardEntity();
+            boardEntity.setTitle(title);
+            boardService.saveBoard(boardEntity);
+            return title + " board created.";
+        }
+        catch (Exception ex){
+            return ex.getMessage();
+        }
     }
     @PostMapping("/addUsersToBoard")
     public String addUsersToBoard(@RequestBody AddUserToBoardDTO body){

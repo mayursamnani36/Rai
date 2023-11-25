@@ -15,16 +15,32 @@ public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
     private Long points;
+
+    @Column(nullable = false)
     private Long assignee;
+
+    @Column(nullable = false)
     private String state;
+
+    @Column(nullable = false)
     private String priority;
+
+    @Column(nullable = false)
     private String tag;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    @Column(name = "updated_at")
+
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
     @PrePersist
     public void prePersist() {createdAt = LocalDateTime.now(); updatedAt = LocalDateTime.now();}
