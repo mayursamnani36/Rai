@@ -27,7 +27,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskEntity> getTasksByUserId(Long userId) {
-        return taskRepository.getTasksByUserId(userId);
+        return taskRepository.getTasksByAssignee(userId);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskEntity> searchTasksByTitle(String title) {
-        return taskRepository.searchTasksByTitle(title);
+        return taskRepository.findByTitleContaining(title);
     }
 }

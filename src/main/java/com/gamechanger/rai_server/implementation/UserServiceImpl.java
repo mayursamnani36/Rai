@@ -19,12 +19,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findUserByUsername(String userName) {
-        return userRepository.findUserByuserName(userName);
+    public UserEntity findUserByUserName(String userName) {
+        return userRepository.findUserByUserName(userName);
     }
 
     @Override
     public UserEntity findUserById(Long id) {
-        return userRepository.findUserByid(id);
+        return userRepository.findUserById(id);
     }
 }

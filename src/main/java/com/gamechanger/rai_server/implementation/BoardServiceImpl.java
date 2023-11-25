@@ -27,7 +27,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardEntity getBoardByTitle(String title) {
-        return boardRepository.getBoardBytitle(title);
+        return boardRepository.getBoardByTitle(title);
     }
 
 
