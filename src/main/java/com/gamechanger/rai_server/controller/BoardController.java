@@ -2,12 +2,14 @@ package com.gamechanger.rai_server.controller;
 
 import com.gamechanger.rai_server.dto.AddUserToBoardDTO;
 import com.gamechanger.rai_server.entity.BoardEntity;
+import com.gamechanger.rai_server.entity.UserEntity;
 import com.gamechanger.rai_server.service.BoardService;
-import com.gamechanger.rai_server.service.UserBoardService;
+import com.gamechanger.rai_server.service.UserService;
 import com.gamechanger.rai_server.utils.RequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,7 +18,7 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
     @Autowired
-    private UserBoardService userBoardService;
+    private UserService userService;
     @Autowired
     private RequestValidator requestValidator;
 
@@ -35,13 +37,16 @@ public class BoardController {
             return ex.getMessage();
         }
     }
-    @PostMapping("/addUsersToBoard")
+    @PostMapping("/addUserToBoard")
     public String addUsersToBoard(@RequestBody AddUserToBoardDTO body){
         try{
             if(!requestValidator.validateUserToBoard(body)){
                 throw new Exception("Invalid body");
             }
-            userBoardService.addUsersToBoard(body);
+            UserEntity dbUser = userService.findUserById(body.getUserId());
+            BoardEntity dbBoard = boardService.getBoardByTitle(body.getBoard());
+            if(dbBoard.getUsers().contains(dbUser)){throw new Exception("Given user Already Exists in the given board");}
+            boardService.addUsersToBoard(dbUser, dbBoard);
             return "Users Added to Board " + body.getBoard();
         }
         catch (Exception ex){

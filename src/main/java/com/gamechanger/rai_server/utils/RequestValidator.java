@@ -7,6 +7,7 @@ import com.gamechanger.rai_server.entity.UserEntity;
 import com.gamechanger.rai_server.service.BoardService;
 import com.gamechanger.rai_server.service.TaskService;
 import com.gamechanger.rai_server.service.UserService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,12 +53,9 @@ public class RequestValidator {
 
     public boolean validateUserToBoard(AddUserToBoardDTO body) {
         String board = body.getBoard();
-        List<Long> users = body.getUsers();
+        Long userId = body.getUserId();
         if(boardService.getBoardByTitle(board)==null){return false;}
-        for(Long id : users){
-            UserEntity dbUser = userService.findUserById(id);
-            if(dbUser==null){return false;}
-        }
-        return true;
+        UserEntity dbUser = userService.findUserById(userId);
+        return dbUser != null;
     }
 }

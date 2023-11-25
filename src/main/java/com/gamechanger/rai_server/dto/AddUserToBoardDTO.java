@@ -11,5 +11,5 @@ import java.util.List;
 @Data
 public class AddUserToBoardDTO {
     String board;
-    List<Long> users;
+    Long userId;
 }
