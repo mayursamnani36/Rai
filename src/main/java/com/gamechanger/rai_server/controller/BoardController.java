@@ -1,19 +1,26 @@
 package com.gamechanger.rai_server.controller;
 
+import com.gamechanger.rai_server.dto.AddBoardDTO;
 import com.gamechanger.rai_server.dto.AddUserToBoardDTO;
 import com.gamechanger.rai_server.entity.BoardEntity;
 import com.gamechanger.rai_server.entity.UserEntity;
 import com.gamechanger.rai_server.service.BoardService;
 import com.gamechanger.rai_server.service.UserService;
 import com.gamechanger.rai_server.utils.RequestValidator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
+@Slf4j
 public class BoardController {
     @Autowired
     private BoardService boardService;
@@ -23,38 +30,58 @@ public class BoardController {
     private RequestValidator requestValidator;
 
     @PostMapping("/createBoard")
-    public String createBoard(@RequestBody String title) {
+    public ResponseEntity<String> createBoard(@RequestBody AddBoardDTO addBoardDTO) {
         try {
-            if (title.isEmpty()) {
-                return "Empty title";
+            log.info("addBoardDTO: {}", addBoardDTO);
+            String title  = addBoardDTO.getTitle();
+            if (title==null || title.isBlank()) {
+                return ResponseEntity.badRequest().body("Title is required");
             }
             BoardEntity boardEntity = new BoardEntity();
             boardEntity.setTitle(title);
             boardService.saveBoard(boardEntity);
-            return title + " board created.";
-        }
-        catch (Exception ex){
-            return ex.getMessage();
+            log.info("Board created Successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(title + " board created.");
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
+
     @PostMapping("/addUserToBoard")
-    public String addUsersToBoard(@RequestBody AddUserToBoardDTO body){
+    public ResponseEntity<String> addUserToBoard(@RequestBody AddUserToBoardDTO addUserToBoardDTO){
         try{
-            if(!requestValidator.validateUserToBoard(body)){
-                throw new Exception("Invalid body");
+            log.info("addUserToBoardDTO: {}", addUserToBoardDTO);
+            if(!requestValidator.validateUserToBoard(addUserToBoardDTO)){
+                return ResponseEntity.badRequest().body("User/Board Doesn't exist in DB");
             }
-            UserEntity dbUser = userService.findUserById(body.getUserId());
-            BoardEntity dbBoard = boardService.getBoardByTitle(body.getBoard());
-            if(dbBoard.getUsers().contains(dbUser)){throw new Exception("Given user Already Exists in the given board");}
+            Long userId = addUserToBoardDTO.getUserId();
+            String board = addUserToBoardDTO.getBoard();
+
+            UserEntity dbUser = userService.findUserById(userId);
+            BoardEntity dbBoard = boardService.getBoardByTitle(board);
+
+            if(dbBoard.getUsers().contains(dbUser)){
+                return ResponseEntity.badRequest().body("User with userId: " + userId.toString()+ " already exists in board: " + board);
+            }
             boardService.addUsersToBoard(dbUser, dbBoard);
-            return "Users Added to Board " + body.getBoard();
+            log.info("User added to board");
+            return ResponseEntity.status(HttpStatus.CREATED).body("User Added to Board " + addUserToBoardDTO.getBoard());
         }
         catch (Exception ex){
-            return ex.getMessage();
+            log.error(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
     @GetMapping("/getBoards")
-    public List<BoardEntity> getBoards(){
-        return boardService.getBoards();
+    public ResponseEntity<List<BoardEntity>> getBoards(){
+        try {
+            List<BoardEntity> boardEntityList = boardService.getBoards();
+            return ResponseEntity.ok(boardEntityList);
+        }
+        catch (Exception ex){
+            log.error(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
+        }
     }
 }

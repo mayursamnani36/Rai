@@ -4,14 +4,15 @@ import com.gamechanger.rai_server.entity.UserEntity;
 import com.gamechanger.rai_server.service.UserService;
 import com.gamechanger.rai_server.utils.RequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private RequestValidator requestValidator;
 

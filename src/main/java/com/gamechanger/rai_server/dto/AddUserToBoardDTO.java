@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class AddUserToBoardDTO {
-    String board;
-    Long userId;
+public final class AddUserToBoardDTO {
+    private String board;
+    private Long userId;
 }

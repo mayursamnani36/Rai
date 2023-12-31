@@ -7,14 +7,12 @@ import com.gamechanger.rai_server.entity.UserEntity;
 import com.gamechanger.rai_server.service.BoardService;
 import com.gamechanger.rai_server.service.TaskService;
 import com.gamechanger.rai_server.service.UserService;
-import org.apache.catalina.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-
 @Component
+@Slf4j
 public class RequestValidator {
 
     @Autowired
@@ -54,8 +52,15 @@ public class RequestValidator {
     public boolean validateUserToBoard(AddUserToBoardDTO body) {
         String board = body.getBoard();
         Long userId = body.getUserId();
-        if(boardService.getBoardByTitle(board)==null){return false;}
+        if(boardService.getBoardByTitle(board)==null){
+            log.error("Board with title: {} does not exist", board);
+            return false;
+        }
         UserEntity dbUser = userService.findUserById(userId);
-        return dbUser != null;
+        if(dbUser==null){
+            log.error("User does not exist with userId: {}", userId);
+            return false;
+        }
+        return true;
     }
 }
