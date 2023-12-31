@@ -8,7 +8,5 @@ import java.util.List;
 public interface UserService {
     void createUser(UserEntity user);
 
-    UserEntity findUserByUserName(String userName);
-
     UserEntity findUserById(Long id);
 }

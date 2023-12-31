@@ -3,11 +3,18 @@ package com.gamechanger.rai_server.controller;
 import com.gamechanger.rai_server.entity.TaskEntity;
 import com.gamechanger.rai_server.service.TaskService;
 import com.gamechanger.rai_server.utils.RequestValidator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
+@Slf4j
 @RestController
 public class TaskController {
 
@@ -17,48 +24,85 @@ public class TaskController {
     private RequestValidator requestValidator;
 
     @PostMapping("/createTask")
-    public String createTask(@RequestBody TaskEntity task){
+    public ResponseEntity<String> createTask(@RequestBody TaskEntity task){
         try{
+            log.info("task: {}", task);
             if(!requestValidator.validateTask(task)) {
-                throw new Exception("Invalid Task");
+                return ResponseEntity.badRequest().body("Invalid Task");
             }
             Long currentId = task.getId();
             taskService.createTask(task);
-            return currentId==null ? "Task has been created with title "+ task.getTitle() + " for user with id " + task.getAssignee():"Task updated";
+            log.info("Task created/updated successfully");
+            return currentId==null ? ResponseEntity.status(HttpStatus.CREATED).body("Task has been created with title "+ task.getTitle() + " for user with id " + task.getAssignee())
+                    :ResponseEntity.status(HttpStatus.CREATED).body("Task updated");
         }
         catch (Exception ex){
-            return ex.getMessage();
+            log.error(ex.getMessage());
+            return ResponseEntity.internalServerError().body(ex.getMessage());
         }
     }
     @GetMapping("/getTaskByTaskId")
-    public TaskEntity getTaskByTaskId(@RequestParam Long taskId){
-        return taskService.getTaskByTaskId(taskId);
+    public ResponseEntity<TaskEntity> getTaskByTaskId(@RequestParam Long taskId){
+        try {
+            log.info("taskId: {}", taskId);
+            TaskEntity task = taskService.getTaskByTaskId(taskId);
+            return ResponseEntity.ok(task);
+        }
+        catch (Exception ex){
+            log.error(ex.getMessage());
+            return ResponseEntity.internalServerError().body(null);
+        }
     }
-
     @PostMapping("/cloneTask")
-    public String cloneTask(@RequestParam Long taskId){
+    public ResponseEntity<String> cloneTask(@RequestParam Long taskId){
         try{
-            TaskEntity task = getTaskByTaskId(taskId);
+            log.info("taskId: {}", taskId);
+            TaskEntity task = getTaskByTaskId(taskId).getBody();
             if(task==null){
-                throw new Exception("Task does not exist");
+                return ResponseEntity.badRequest().body("Task does not exist with taskId: "+taskId);
             }
             TaskEntity clonedTask = new TaskEntity(task);
             return createTask(clonedTask);
         }
         catch (Exception ex){
-            return ex.getMessage();
+            log.error(ex.getMessage());
+            return ResponseEntity.internalServerError().body(ex.getMessage());
         }
     }
     @GetMapping("/getTasksByUserId")
-    public List<TaskEntity> getTasksByUserId(@RequestParam Long userId){
-        return taskService.getTasksByUserId(userId);
+    public ResponseEntity<List<TaskEntity>> getTasksByUserId(@RequestParam Long userId){
+        try {
+            log.info("userId: {}", userId);
+            List<TaskEntity> taskEntityList = taskService.getTasksByUserId(userId);
+            return ResponseEntity.ok(taskEntityList);
+        }
+        catch (Exception ex){
+            log.info(ex.getMessage());
+            return ResponseEntity.internalServerError().body(null);
+        }
     }
     @GetMapping("/getTasksByTag")
-    public List<TaskEntity> getTasksByTag(@RequestParam String tag){
-        return taskService.getTasksByTag(tag);
+    public ResponseEntity<List<TaskEntity>> getTasksByTag(@RequestParam String tag){
+        try{
+            log.info("tag: {}", tag);
+            List<TaskEntity> taskEntityList = taskService.getTasksByTag(tag);
+            return ResponseEntity.ok(taskEntityList);
+        }
+        catch (Exception ex){
+            log.info(ex.getMessage());
+            return ResponseEntity.internalServerError().body(null);
+        }
     }
     @GetMapping("/search")
-    public List<TaskEntity> searchTasksByTitle(@RequestParam String title) {
-        return taskService.searchTasksByTitle(title);
+    public ResponseEntity<List<TaskEntity>> searchTasksByTitle(@RequestParam String title) {
+        try {
+            log.info("title: {}", title);
+            List<TaskEntity> taskEntityList = taskService.searchTasksByTitle(title);
+            return ResponseEntity.ok(taskEntityList);
+        }
+        catch (Exception ex){
+            log.info(ex.getMessage());
+            return ResponseEntity.internalServerError().body(null);
+        }
     }
 }

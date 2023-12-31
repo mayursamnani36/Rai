@@ -26,7 +26,15 @@ public class RequestValidator {
         // Unique username check is done in UserEntity class
         String userName = user.getUserName();
         String password = user.getPassword();
-        return userName.length() >= 4 && userName.length() <= 10 && password.length() >= 8;
+        if(password==null || password.length() < 8){
+            log.error("Password is null or has size less than 8");
+            return false;
+        }
+        if(userName==null || userName.length()>10 || userName.length()<3){
+            log.error("Username is either null doesn't satisfy length constraints");
+            return false;
+        }
+        return true;
     }
 
     public boolean validateComment(AddCommentDTO addCommentDTO) {
@@ -35,7 +43,20 @@ public class RequestValidator {
         Long taskId = addCommentDTO.getTaskId();
         UserEntity dbUser = userService.findUserById(userId);
         TaskEntity dbTask = taskService.getTaskByTaskId(taskId);
-        return !comment.isEmpty() && !(dbTask==null) && !(dbUser==null);
+
+        if(comment==null || comment.isBlank()){
+            log.error("Comment is null or empty");
+            return false;
+        }
+        if(dbTask==null){
+            log.error("Task doesn't exists with taskId: {}", taskId);
+            return false;
+        }
+        if(dbUser==null){
+            log.error("User doesn't exists with userId: {}", userId);
+            return false;
+        }
+        return true;
     }
 
     public boolean validateTask(TaskEntity task) {
@@ -46,7 +67,31 @@ public class RequestValidator {
         String priority = task.getPriority();
         String tag = task.getTag();
         UserEntity dbUser = userService.findUserById(assignee);
-        return !title.isEmpty() && !description.isEmpty() && dbUser!=null && !state.isEmpty() && !priority.isEmpty() && !tag.isEmpty();
+        if(title==null || title.isBlank()){
+            log.error("Title is null or empty");
+            return false;
+        }
+        if(description==null || description.isBlank()){
+            log.error("Description is null or empty");
+            return false;
+        }
+        if(dbUser==null){
+            log.error("User does not exist with userId: {}", assignee);
+            return false;
+        }
+        if(state==null || state.isBlank()){
+            log.error("State is null or empty");
+            return false;
+        }
+        if(priority==null || priority.isBlank()){
+            log.error("Priority is null or empty");
+            return false;
+        }
+        if(tag==null || tag.isBlank()){
+            log.error("Tag is null or empty");
+            return false;
+        }
+        return true;
     }
 
     public boolean validateUserToBoard(AddUserToBoardDTO body) {
