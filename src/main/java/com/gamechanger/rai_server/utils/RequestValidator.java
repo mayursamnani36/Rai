@@ -7,6 +7,7 @@ import com.gamechanger.rai_server.entity.UserEntity;
 import com.gamechanger.rai_server.service.BoardService;
 import com.gamechanger.rai_server.service.TaskService;
 import com.gamechanger.rai_server.service.UserService;
+import com.mysql.cj.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,11 +27,11 @@ public class RequestValidator {
         // Unique username check is done in UserEntity class
         String userName = user.getUserName();
         String password = user.getPassword();
-        if(password==null || password.length() < 8){
+        if(StringUtils.isEmptyOrWhitespaceOnly(password) || password.length() < 8){
             log.error("Password is null or has size less than 8");
             return false;
         }
-        if(userName==null || userName.length()>10 || userName.length()<3){
+        if(StringUtils.isEmptyOrWhitespaceOnly(userName) || userName.length()>10 || userName.length()<3){
             log.error("Username is either null doesn't satisfy length constraints");
             return false;
         }
@@ -44,7 +45,7 @@ public class RequestValidator {
         UserEntity dbUser = userService.findUserById(userId);
         TaskEntity dbTask = taskService.getTaskByTaskId(taskId);
 
-        if(comment==null || comment.isBlank()){
+        if(StringUtils.isEmptyOrWhitespaceOnly(comment)){
             log.error("Comment is null or empty");
             return false;
         }
@@ -67,11 +68,11 @@ public class RequestValidator {
         String priority = task.getPriority();
         String tag = task.getTag();
         UserEntity dbUser = userService.findUserById(assignee);
-        if(title==null || title.isBlank()){
+        if(StringUtils.isEmptyOrWhitespaceOnly(title)){
             log.error("Title is null or empty");
             return false;
         }
-        if(description==null || description.isBlank()){
+        if(StringUtils.isEmptyOrWhitespaceOnly(description)){
             log.error("Description is null or empty");
             return false;
         }
@@ -79,15 +80,15 @@ public class RequestValidator {
             log.error("User does not exist with userId: {}", assignee);
             return false;
         }
-        if(state==null || state.isBlank()){
+        if(StringUtils.isEmptyOrWhitespaceOnly(state)){
             log.error("State is null or empty");
             return false;
         }
-        if(priority==null || priority.isBlank()){
+        if(StringUtils.isEmptyOrWhitespaceOnly(priority)){
             log.error("Priority is null or empty");
             return false;
         }
-        if(tag==null || tag.isBlank()){
+        if(StringUtils.isEmptyOrWhitespaceOnly(tag)){
             log.error("Tag is null or empty");
             return false;
         }

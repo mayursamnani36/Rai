@@ -36,4 +36,7 @@ public final class BoardEntity {
     )
     private Set<UserEntity> users = new HashSet<>();
 
+    public BoardEntity(String boardTitle) {
+        this.title = boardTitle;
+    }
 }

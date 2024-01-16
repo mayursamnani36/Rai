@@ -7,6 +7,7 @@ import com.gamechanger.rai_server.entity.UserEntity;
 import com.gamechanger.rai_server.service.BoardService;
 import com.gamechanger.rai_server.service.UserService;
 import com.gamechanger.rai_server.utils.RequestValidator;
+import com.mysql.cj.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class BoardController {
         try {
             log.info("addBoardDTO: {}", addBoardDTO);
             String title  = addBoardDTO.getTitle();
-            if (title==null || title.isBlank()) {
+            if (StringUtils.isEmptyOrWhitespaceOnly(title)) {
                 return ResponseEntity.badRequest().body("Title is required");
             }
             BoardEntity boardEntity = new BoardEntity();

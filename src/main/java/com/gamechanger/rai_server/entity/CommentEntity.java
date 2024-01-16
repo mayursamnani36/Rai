@@ -26,4 +26,10 @@ public final class CommentEntity {
 
     @Column(nullable = false)
     private String comment;
+
+    public CommentEntity(String comment, long userId, Long taskId) {
+        this.comment = comment;
+        this.userId = userId;
+        this.taskId = taskId;
+    }
 }

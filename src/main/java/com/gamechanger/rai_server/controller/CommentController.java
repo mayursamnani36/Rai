@@ -37,7 +37,7 @@ public class CommentController {
             commentEntity.setTaskId(addCommentDTO.getTaskId());
             commentService.addComment(commentEntity);
             log.info("Comment added successfully");
-            return ResponseEntity.status(HttpStatus.CREATED).body("Comment Added for task id \" + addCommentDTO.getTaskId() + \" by user with user id \" + addCommentDTO.getUserId()");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Comment Added for task id " + addCommentDTO.getTaskId() + " by user with user id " + addCommentDTO.getUserId());
         }
         catch (Exception ex){
             log.error(ex.getMessage());

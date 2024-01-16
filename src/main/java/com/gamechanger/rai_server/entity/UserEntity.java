@@ -29,4 +29,9 @@ public final class UserEntity {
 
     @ManyToMany(mappedBy = "users")
     private Set<BoardEntity> boards = new HashSet<>();
+
+    public UserEntity(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
 }
