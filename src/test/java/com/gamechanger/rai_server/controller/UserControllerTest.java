@@ -23,7 +23,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @ExtendWith(MockitoExtension.class)
-
 public class UserControllerTest {
 
     private MockMvc mockMvc;
