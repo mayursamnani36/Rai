@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
-public class CommentServiceImplTest {
+class CommentServiceImplTest {
 
     @Mock
     private CommentRepository commentRepository;
@@ -25,7 +25,7 @@ public class CommentServiceImplTest {
     private CommentServiceImpl commentService;
 
     @Test
-    public void testAddComment() {
+    void testAddComment() {
         CommentEntity commentEntity = new CommentEntity();
 
         commentService.addComment(commentEntity);
@@ -34,7 +34,7 @@ public class CommentServiceImplTest {
     }
 
     @Test
-    public void testGetCommentsByTaskId() {
+    void testGetCommentsByTaskId() {
         Long taskId = 1L;
         List<CommentEntity> expectedComments = new ArrayList<>();
         when(commentRepository.getCommentsByTaskId(taskId)).thenReturn(expectedComments);

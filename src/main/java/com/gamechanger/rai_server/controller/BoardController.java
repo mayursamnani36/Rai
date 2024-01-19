@@ -22,12 +22,16 @@ import java.util.List;
 @RestController
 @Slf4j
 public class BoardController {
+    private final BoardService boardService;
+    private final UserService userService;
+    private final RequestValidator requestValidator;
+
     @Autowired
-    private BoardService boardService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RequestValidator requestValidator;
+    public BoardController(BoardService boardService, UserService userService, RequestValidator requestValidator) {
+        this.boardService = boardService;
+        this.userService = userService;
+        this.requestValidator = requestValidator;
+    }
 
     @PostMapping("/createBoard")
     public ResponseEntity<String> createBoard(@RequestBody AddBoardDTO addBoardDTO) {

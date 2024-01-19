@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
+    private final UserService userService;
+    private final RequestValidator requestValidator;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private RequestValidator requestValidator;
+    public UserController(UserService userService, RequestValidator requestValidator) {
+        this.userService = userService;
+        this.requestValidator = requestValidator;
+    }
 
     @PostMapping("/createUser")
     public ResponseEntity<String> createUser(@RequestBody UserEntity user){

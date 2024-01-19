@@ -13,8 +13,13 @@ import java.util.List;
 @Primary
 public class TaskServiceImpl implements TaskService {
 
+    private final TaskRepository taskRepository;
+
     @Autowired
-    private TaskRepository taskRepository;
+    public TaskServiceImpl(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
+
     @Override
     public void createTask(TaskEntity task) {
         taskRepository.save(task);

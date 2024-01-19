@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
-public class TaskServiceImplTest {
+class TaskServiceImplTest {
 
     @Mock
     private TaskRepository taskRepository;
@@ -27,7 +27,7 @@ public class TaskServiceImplTest {
     private TaskServiceImpl taskService;
 
     @Test
-    public void testCreateTask() {
+    void testCreateTask() {
         TaskEntity taskEntity = new TaskEntity();
 
         taskService.createTask(taskEntity);
@@ -36,7 +36,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
-    public void testGetTaskByTaskId() {
+    void testGetTaskByTaskId() {
         Long taskId = 1L;
         TaskEntity expectedTask = new TaskEntity();
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(expectedTask));
@@ -48,7 +48,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
-    public void testGetTasksByUserId() {
+    void testGetTasksByUserId() {
         Long userId = 1L;
         List<TaskEntity> expectedTasks = new ArrayList<>();
         when(taskRepository.getTasksByAssignee(userId)).thenReturn(expectedTasks);
@@ -60,7 +60,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
-    public void testGetTasksByTag() {
+    void testGetTasksByTag() {
         String tag = "TestTag";
         List<TaskEntity> expectedTasks = new ArrayList<>();
         when(taskRepository.getTasksByTag(tag)).thenReturn(expectedTasks);
@@ -72,7 +72,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
-    public void testSearchTasksByTitle() {
+    void testSearchTasksByTitle() {
         String title = "TestTitle";
         List<TaskEntity> expectedTasks = new ArrayList<>();
         when(taskRepository.findByTitleContaining(title)).thenReturn(expectedTasks);

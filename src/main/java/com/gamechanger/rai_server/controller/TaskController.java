@@ -18,10 +18,14 @@ import java.util.List;
 @RestController
 public class TaskController {
 
-    @Autowired
     private TaskService taskService;
-    @Autowired
     private RequestValidator requestValidator;
+
+    @Autowired
+    public TaskController(TaskService taskService, RequestValidator requestValidator) {
+        this.taskService = taskService;
+        this.requestValidator = requestValidator;
+    }
 
     @PostMapping("/createTask")
     public ResponseEntity<String> createTask(@RequestBody TaskEntity task){

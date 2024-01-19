@@ -14,8 +14,13 @@ import java.util.List;
 @Primary
 public class BoardServiceImpl implements BoardService {
 
+    private final BoardRepository boardRepository;
+
     @Autowired
-    private BoardRepository boardRepository;
+    public BoardServiceImpl(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
+    }
+
     @Override
     public void saveBoard(BoardEntity boardEntity) {
         boardRepository.save(boardEntity);

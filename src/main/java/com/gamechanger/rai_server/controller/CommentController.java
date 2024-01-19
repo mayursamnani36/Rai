@@ -19,10 +19,14 @@ import java.util.List;
 @RestController
 public class CommentController {
 
+    private final CommentService commentService;
+    private final RequestValidator requestValidator;
+
     @Autowired
-    private CommentService commentService;
-    @Autowired
-    private RequestValidator requestValidator;
+    public CommentController(CommentService commentService, RequestValidator requestValidator) {
+        this.commentService = commentService;
+        this.requestValidator = requestValidator;
+    }
 
     @PostMapping("/addComment")
     public ResponseEntity<String> addComment(@RequestBody AddCommentDTO addCommentDTO){

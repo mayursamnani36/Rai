@@ -31,7 +31,7 @@ import static org.mockito.Mockito.any;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @ExtendWith(MockitoExtension.class)
-public class BoardControllerTest {
+class BoardControllerTest {
 
     @Mock
     private BoardService boardService;
@@ -53,7 +53,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void testCreateBoardSuccess() throws Exception {
+    void testCreateBoardSuccess() throws Exception {
         AddBoardDTO addBoardDTO = new AddBoardDTO("Board Title");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/createBoard")
@@ -66,7 +66,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void testCreateBoardBadRequest() throws Exception {
+    void testCreateBoardBadRequest() throws Exception {
         AddBoardDTO addBoardDTO = new AddBoardDTO(null); // Invalid title
 
         mockMvc.perform(MockMvcRequestBuilders.post("/createBoard")
@@ -78,7 +78,7 @@ public class BoardControllerTest {
         verify(boardService, never()).saveBoard(any(BoardEntity.class));
     }
     @Test
-    public void testCreateBoardException() throws Exception {
+    void testCreateBoardException() throws Exception {
         AddBoardDTO addBoardDTO = new AddBoardDTO("Board Title");
 
         doThrow(new RuntimeException()).when(boardService).saveBoard(any(BoardEntity.class));
@@ -91,7 +91,7 @@ public class BoardControllerTest {
         verify(boardService, times(1)).saveBoard(any(BoardEntity.class));
     }
     @Test
-    public void testAddUserToBoardSuccess() throws Exception {
+    void testAddUserToBoardSuccess() throws Exception {
         AddUserToBoardDTO addUserToBoardDTO = new AddUserToBoardDTO("BoardTitle", 1L);
 
         when(requestValidator.validateUserToBoard(addUserToBoardDTO)).thenReturn(true);
@@ -108,7 +108,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void testAddUserToBoardBadRequest() throws Exception {
+    void testAddUserToBoardBadRequest() throws Exception {
         AddUserToBoardDTO addUserToBoardDTO = new AddUserToBoardDTO("BoardTitle", 1L);
 
         when(requestValidator.validateUserToBoard(addUserToBoardDTO)).thenReturn(false);
@@ -123,7 +123,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void testAddUserToBoardUserExistsInBoard() throws Exception {
+    void testAddUserToBoardUserExistsInBoard() throws Exception {
         AddUserToBoardDTO addUserToBoardDTO = new AddUserToBoardDTO("BoardTitle", 1L);
 
         when(requestValidator.validateUserToBoard(addUserToBoardDTO)).thenReturn(true);
@@ -142,7 +142,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void testAddUserToBoardException() throws Exception {
+    void testAddUserToBoardException() throws Exception {
         AddUserToBoardDTO addUserToBoardDTO = new AddUserToBoardDTO("BoardTitle", 1L);
 
         when(requestValidator.validateUserToBoard(addUserToBoardDTO)).thenReturn(true);
@@ -160,7 +160,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void testGetBoardsSuccess() throws Exception {
+    void testGetBoardsSuccess() throws Exception {
         List<BoardEntity> boardEntityList = Collections.singletonList(new BoardEntity("BoardTitle"));
 
         when(boardService.getBoards()).thenReturn(boardEntityList);
@@ -173,7 +173,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void testGetBoardsException() throws Exception {
+    void testGetBoardsException() throws Exception {
         when(boardService.getBoards()).thenThrow(new RuntimeException());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/getBoards"))

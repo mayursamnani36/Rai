@@ -31,7 +31,7 @@ import static org.mockito.Mockito.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 @ExtendWith(MockitoExtension.class)
-public class CommentControllerTest {
+class CommentControllerTest {
 
     @Mock
     private CommentService commentService;
@@ -50,7 +50,7 @@ public class CommentControllerTest {
     }
 
     @Test
-    public void testAddCommentSuccess() throws Exception {
+    void testAddCommentSuccess() throws Exception {
         AddCommentDTO addCommentDTO = new AddCommentDTO("Valid comment", 1L, 2L);
 
         when(requestValidator.validateComment(addCommentDTO)).thenReturn(true);
@@ -67,7 +67,7 @@ public class CommentControllerTest {
     }
 
     @Test
-    public void testAddCommentBadRequest() throws Exception {
+    void testAddCommentBadRequest() throws Exception {
         AddCommentDTO addCommentDTO = new AddCommentDTO("Short", 1L, 2L);
 
         when(requestValidator.validateComment(addCommentDTO)).thenReturn(false);
@@ -83,7 +83,7 @@ public class CommentControllerTest {
     }
 
     @Test
-    public void testAddCommentException() throws Exception {
+    void testAddCommentException() throws Exception {
         AddCommentDTO addCommentDTO = new AddCommentDTO("Valid comment", 1L, 2L);
 
         when(requestValidator.validateComment(addCommentDTO)).thenReturn(true);
@@ -99,7 +99,7 @@ public class CommentControllerTest {
         verify(commentService, times(1)).addComment(any(CommentEntity.class));
     }
     @Test
-    public void testGetCommentsByTaskIdSuccess() throws Exception {
+    void testGetCommentsByTaskIdSuccess() throws Exception {
         Long taskId = 1L;
 
         when(commentService.getCommentsByTaskId(taskId)).thenReturn(Collections.singletonList(new CommentEntity("Valid comment", 1L, taskId)));
@@ -114,7 +114,7 @@ public class CommentControllerTest {
     }
 
     @Test
-    public void testGetCommentsByTaskIdException() throws Exception {
+    void testGetCommentsByTaskIdException() throws Exception {
         Long taskId = 1L;
 
         when(commentService.getCommentsByTaskId(taskId)).thenThrow(new RuntimeException());

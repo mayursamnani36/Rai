@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = RaiApplication.class)
-public class RaiApplicationTest {
+class RaiApplicationTest {
 
     @Test
-    public void contextLoads() {
+    void contextLoads() {
         // This test method is just to ensure that the application context loads without errors
     }
 }

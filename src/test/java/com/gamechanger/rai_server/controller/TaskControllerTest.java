@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @ExtendWith(MockitoExtension.class)
-public class TaskControllerTest {
+class TaskControllerTest {
 
     @Mock
     private TaskService taskService;
@@ -39,12 +39,12 @@ public class TaskControllerTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = standaloneSetup(taskController).build();
     }
 
     @Test
-    public void testCreateTaskSuccess() throws Exception {
+    void testCreateTaskSuccess() throws Exception {
         TaskEntity taskEntity = new TaskEntity();
 
         when(requestValidator.validateTask(taskEntity)).thenReturn(true);
@@ -58,7 +58,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testCreateTaskBadRequest() throws Exception {
+    void testCreateTaskBadRequest() throws Exception {
         TaskEntity taskEntity = new TaskEntity();
 
         when(requestValidator.validateTask(taskEntity)).thenReturn(false);
@@ -72,7 +72,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testGetTaskByTaskIdSuccess() throws Exception {
+    void testGetTaskByTaskIdSuccess() throws Exception {
         TaskEntity taskEntity = new TaskEntity();
         taskEntity.setId(1L);
 
@@ -86,7 +86,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testGetTaskByTaskIdException() throws Exception {
+    void testGetTaskByTaskIdException() throws Exception {
         when(taskService.getTaskByTaskId(1L)).thenThrow(new RuntimeException());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/getTaskByTaskId?taskId=1"))
@@ -96,7 +96,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testCloneTaskBadRequest() throws Exception {
+    void testCloneTaskBadRequest() throws Exception {
         when(taskService.getTaskByTaskId(1L)).thenReturn(null);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/cloneTask?taskId=1"))
@@ -107,7 +107,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testCloneTaskException() throws Exception {
+    void testCloneTaskException() throws Exception {
         when(taskService.getTaskByTaskId(1L)).thenReturn(new TaskEntity());
         when(taskController.createTask(any(TaskEntity.class))).thenThrow(new RuntimeException("Simulating an exception during task cloning"));
 
@@ -119,7 +119,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testGetTasksByUserIdSuccess() throws Exception {
+    void testGetTasksByUserIdSuccess() throws Exception {
         TaskEntity taskEntity = new TaskEntity();
         taskEntity.setId(1L);
         when(taskService.getTasksByUserId(1L)).thenReturn(Collections.singletonList(taskEntity));
@@ -132,7 +132,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testGetTasksByUserIdException() throws Exception {
+    void testGetTasksByUserIdException() throws Exception {
         when(taskService.getTasksByUserId(1L)).thenThrow(new RuntimeException());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/getTasksByUserId?userId=1"))
@@ -142,7 +142,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testGetTasksByTagSuccess() throws Exception {
+    void testGetTasksByTagSuccess() throws Exception {
         TaskEntity taskEntity = new TaskEntity();
         taskEntity.setTag("tag");
         when(taskService.getTasksByTag("tag")).thenReturn(Collections.singletonList(taskEntity));
@@ -154,7 +154,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testGetTasksByTagException() throws Exception {
+    void testGetTasksByTagException() throws Exception {
         when(taskService.getTasksByTag("tag")).thenThrow(new RuntimeException());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/getTasksByTag?tag=tag"))
@@ -164,7 +164,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testSearchTasksByTitleSuccess() throws Exception {
+    void testSearchTasksByTitleSuccess() throws Exception {
         TaskEntity taskEntity = new TaskEntity();
         taskEntity.setTitle("title");
         when(taskService.searchTasksByTitle("title")).thenReturn(Collections.singletonList(taskEntity));
@@ -177,7 +177,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testSearchTasksByTitleException() throws Exception {
+    void testSearchTasksByTitleException() throws Exception {
         when(taskService.searchTasksByTitle("title")).thenThrow(new RuntimeException());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/search?title=title"))

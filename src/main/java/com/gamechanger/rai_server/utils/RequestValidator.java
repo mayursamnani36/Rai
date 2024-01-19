@@ -16,12 +16,16 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class RequestValidator {
 
+    private final UserService userService;
+    private final TaskService taskService;
+    private final BoardService boardService;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private TaskService taskService;
-    @Autowired
-    private BoardService boardService;
+    public RequestValidator(UserService userService, TaskService taskService, BoardService boardService) {
+        this.userService = userService;
+        this.taskService = taskService;
+        this.boardService = boardService;
+    }
 
     public boolean validateUser(UserEntity user){
         // Unique username check is done in UserEntity class

@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
-public class UserServiceImplTest {
+class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
@@ -22,7 +22,7 @@ public class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Test
-    public void testCreateUser() {
+    void testCreateUser() {
         UserEntity userEntity = new UserEntity();
 
         userService.createUser(userEntity);
@@ -31,7 +31,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testFindUserById() {
+    void testFindUserById() {
         Long userId = 1L;
         UserEntity expectedUser = new UserEntity();
         when(userRepository.findUserById(userId)).thenReturn(expectedUser);

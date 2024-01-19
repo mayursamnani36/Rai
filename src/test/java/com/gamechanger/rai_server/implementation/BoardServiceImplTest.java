@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
-public class BoardServiceImplTest {
+class BoardServiceImplTest {
 
     @Mock
     private BoardRepository boardRepository;
@@ -27,7 +27,7 @@ public class BoardServiceImplTest {
     private BoardServiceImpl boardService;
 
     @Test
-    public void testSaveBoard() {
+    void testSaveBoard() {
         BoardEntity boardEntity = new BoardEntity();
 
         boardService.saveBoard(boardEntity);
@@ -36,7 +36,7 @@ public class BoardServiceImplTest {
     }
 
     @Test
-    public void testGetBoards() {
+    void testGetBoards() {
         List<BoardEntity> expectedBoards = new ArrayList<>();
         when(boardRepository.findAll()).thenReturn(expectedBoards);
 
@@ -47,7 +47,7 @@ public class BoardServiceImplTest {
     }
 
     @Test
-    public void testGetBoardByTitle() {
+    void testGetBoardByTitle() {
         String title = "TestBoard";
         BoardEntity expectedBoard = new BoardEntity();
         when(boardRepository.getBoardByTitle(title)).thenReturn(expectedBoard);
@@ -59,7 +59,7 @@ public class BoardServiceImplTest {
     }
 
     @Test
-    public void testAddUsersToBoard() {
+    void testAddUsersToBoard() {
         UserEntity dbUser = new UserEntity();
         BoardEntity board = new BoardEntity();
 

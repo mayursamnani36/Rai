@@ -12,8 +12,13 @@ import java.util.List;
 @Service
 @Primary
 public class CommentServiceImpl implements CommentService {
+    private final CommentRepository commentRepository;
+
     @Autowired
-    private CommentRepository commentRepository;
+    public CommentServiceImpl(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
+
     @Override
     public void addComment(CommentEntity commentEntity) {
         commentRepository.save(commentEntity);

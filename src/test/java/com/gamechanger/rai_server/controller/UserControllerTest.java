@@ -23,7 +23,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @ExtendWith(MockitoExtension.class)
-public class UserControllerTest {
+class UserControllerTest {
 
     private MockMvc mockMvc;
 
@@ -37,12 +37,12 @@ public class UserControllerTest {
     private UserController userController;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = standaloneSetup(userController).build();
     }
 
     @Test
-    public void testCreateUserSuccess() throws Exception {
+    void testCreateUserSuccess() throws Exception {
         UserEntity user = new UserEntity("validUser", "validPassword");
 
         when(requestValidator.validateUser(user)).thenReturn(true);
@@ -59,7 +59,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCreateUserBadRequest() throws Exception {
+    void testCreateUserBadRequest() throws Exception {
         UserEntity user = new UserEntity("short", "short");
 
         when(requestValidator.validateUser(user)).thenReturn(false);
@@ -74,7 +74,7 @@ public class UserControllerTest {
         verify(userService, never()).createUser(user);
     }
     @Test
-    public void testCreateUserException() throws Exception {
+    void testCreateUserException() throws Exception {
         UserEntity user = new UserEntity("validUser", "validPassword");
 
         when(requestValidator.validateUser(user)).thenReturn(true);
