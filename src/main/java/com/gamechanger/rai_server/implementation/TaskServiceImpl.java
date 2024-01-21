@@ -4,8 +4,6 @@ import com.gamechanger.rai_server.entity.TaskEntity;
 import com.gamechanger.rai_server.repository.TaskRepository;
 import com.gamechanger.rai_server.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +11,6 @@ import java.util.List;
 
 @Service
 @Primary
-@CacheConfig(cacheNames = "tasks")
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
@@ -29,7 +26,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @Cacheable(key = "#taskId")
     public TaskEntity getTaskByTaskId(Long taskId) {
         return taskRepository.findById(taskId).orElse(null);
     }

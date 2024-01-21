@@ -5,8 +5,6 @@ import com.gamechanger.rai_server.entity.UserEntity;
 import com.gamechanger.rai_server.repository.BoardRepository;
 import com.gamechanger.rai_server.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +12,6 @@ import java.util.List;
 
 @Service
 @Primary
-@CacheConfig(cacheNames = "boards")
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
@@ -35,7 +32,6 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    @Cacheable(key = "#title")
     public BoardEntity getBoardByTitle(String title) {
         return boardRepository.getBoardByTitle(title);
     }
