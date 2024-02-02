@@ -10,6 +10,7 @@ import com.gamechanger.rai_server.utils.RequestValidator;
 import com.mysql.cj.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +47,12 @@ public class BoardController {
             boardService.saveBoard(boardEntity);
             log.info("Board created Successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body(title + " board created.");
-        } catch (Exception ex) {
+
+        }
+        catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Board already exists");
+        }
+        catch (Exception ex) {
             log.error(ex.getMessage());
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }

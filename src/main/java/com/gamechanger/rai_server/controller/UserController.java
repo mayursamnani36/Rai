@@ -5,6 +5,7 @@ import com.gamechanger.rai_server.service.UserService;
 import com.gamechanger.rai_server.utils.RequestValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,9 @@ public class UserController {
             userService.createUser(user);
             log.info("User created successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body("User Saved Successfully with username " + user.getUserName());
+        }
+        catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
         catch (Exception ex){
             log.error(ex.getMessage());
