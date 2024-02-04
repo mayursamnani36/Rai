@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface TaskService {
     void createTask(TaskEntity task);
+
     TaskEntity getTaskByTaskId(Long taskId);
     List<TaskEntity> getTasksByUserId(Long userId);
 
