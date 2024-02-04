@@ -20,14 +20,14 @@ WORKDIR /app
 # Copy the JAR file from the builder stage
 COPY --from=builder /app/target/rai-workflow.jar /app/rai-workflow.jar
 
-# Install MySQL
-RUN apt-get update && \
-    apt-get install -y mysql-server && \
-    service mysql start && \
-    mysql -u root -e "CREATE DATABASE IF NOT EXISTS rai;"
-
 # Expose the port for the Spring Boot application
 EXPOSE 8080
+
+# Install MySQL using apt package manager
+RUN apt-get update && \
+    apt-get install -y default-mysql-server && \
+    service mysql start && \
+    mysql -u root -e "CREATE DATABASE IF NOT EXISTS rai;"
 
 # Start MySQL and the Spring Boot application
 CMD service mysql start && java -jar /app/rai-workflow.jar
