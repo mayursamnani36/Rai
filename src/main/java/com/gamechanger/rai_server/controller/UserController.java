@@ -16,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,23 +40,19 @@ public class UserController {
     }
 
     @PostMapping("/createUser")
-    public ResponseEntity<String> createUser(@RequestBody UserEntity user){
-        try{
-            log.info("user: {}", user);
-            if(!requestValidator.validateUser(user)){
+    public ResponseEntity<String> createUser(@RequestBody UserEntity user) {
+        log.info("user: {}", user);
+        try {
+            if (!requestValidator.validateUser(user)) {
                 return ResponseEntity.badRequest().body("Please Enter a valid Request with username size between 4 to 10 and password size greater than 8");
             }
-            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userService.createUser(user);
             log.info("User created successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body("User Saved Successfully with username " + user.getUserName());
-        }
-        catch (DataIntegrityViolationException ex) {
+        } catch (DataIntegrityViolationException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
-        }
-        catch (Exception ex){
-            log.error(ex.getMessage());
+        } catch (Exception ex) {
+            log.error("Error creating user: ", ex);
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
     }

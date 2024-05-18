@@ -4,7 +4,6 @@ import com.gamechanger.rai_server.dto.AddCommentDTO;
 import com.gamechanger.rai_server.dto.AddUserToBoardDTO;
 import com.gamechanger.rai_server.entity.TaskEntity;
 import com.gamechanger.rai_server.entity.UserEntity;
-import com.gamechanger.rai_server.service.BoardService;
 import com.gamechanger.rai_server.service.TaskService;
 import com.gamechanger.rai_server.service.UserService;
 import com.mysql.cj.util.StringUtils;
@@ -18,13 +17,11 @@ public class RequestValidator {
 
     private final UserService userService;
     private final TaskService taskService;
-    private final BoardService boardService;
 
     @Autowired
-    public RequestValidator(UserService userService, TaskService taskService, BoardService boardService) {
+    public RequestValidator(UserService userService, TaskService taskService) {
         this.userService = userService;
         this.taskService = taskService;
-        this.boardService = boardService;
     }
 
     public boolean validateUser(UserEntity user){
@@ -43,7 +40,7 @@ public class RequestValidator {
     }
 
     public boolean validateComment(AddCommentDTO addCommentDTO) {
-        String comment = addCommentDTO.getComment();
+         String comment = addCommentDTO.getComment();
         Long userId = addCommentDTO.getUserId();
         Long taskId = addCommentDTO.getTaskId();
         UserEntity dbUser = userService.findUserById(userId);
@@ -100,12 +97,7 @@ public class RequestValidator {
     }
 
     public boolean validateUserToBoard(AddUserToBoardDTO body) {
-        String board = body.getBoard();
         Long userId = body.getUserId();
-        if(boardService.getBoardByTitle(board)==null){
-            log.error("Board with title: {} does not exist", board);
-            return false;
-        }
         UserEntity dbUser = userService.findUserById(userId);
         if(dbUser==null){
             log.error("User does not exist with userId: {}", userId);

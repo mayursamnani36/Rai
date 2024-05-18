@@ -42,6 +42,7 @@ public class TaskController {
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
     }
+
     @GetMapping("/getTaskByTaskId")
     public ResponseEntity<TaskEntity> getTaskByTaskId(@RequestParam Long taskId){
         try {
@@ -54,6 +55,7 @@ public class TaskController {
             return ResponseEntity.internalServerError().body(null);
         }
     }
+
     @PostMapping("/cloneTask")
     public ResponseEntity<String> cloneTask(@RequestParam Long taskId){
         try{
@@ -70,6 +72,7 @@ public class TaskController {
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
     }
+
     @GetMapping("/getTasksByUserId")
     public ResponseEntity<List<TaskEntity>> getTasksByUserId(@RequestParam Long userId){
         try {
@@ -82,6 +85,7 @@ public class TaskController {
             return ResponseEntity.internalServerError().body(null);
         }
     }
+
     @GetMapping("/getTasksByTag")
     public ResponseEntity<List<TaskEntity>> getTasksByTag(@RequestParam String tag){
         try{
@@ -94,6 +98,7 @@ public class TaskController {
             return ResponseEntity.internalServerError().body(null);
         }
     }
+
     @GetMapping("/search")
     public ResponseEntity<List<TaskEntity>> searchTasksByTitle(@RequestParam String title) {
         try {

@@ -1,5 +1,6 @@
 package com.gamechanger.rai_server.implementation;
 
+import com.gamechanger.rai_server.dto.AddCommentDTO;
 import com.gamechanger.rai_server.entity.CommentEntity;
 import com.gamechanger.rai_server.repository.CommentRepository;
 import com.gamechanger.rai_server.service.CommentService;
@@ -20,7 +21,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void addComment(CommentEntity commentEntity) {
+    public void addComment(AddCommentDTO addCommentDTO) {
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setComment(addCommentDTO.getComment());
+        commentEntity.setUserId(addCommentDTO.getUserId());
+        commentEntity.setTaskId(addCommentDTO.getTaskId());
         commentRepository.save(commentEntity);
     }
 
