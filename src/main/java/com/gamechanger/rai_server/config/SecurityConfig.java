@@ -73,7 +73,8 @@ public class SecurityConfig {
                                 "/webjars/**",
                                 "/actuator/**",
                                 "/login",
-                                "/createUser").permitAll()
+                                "/createUser",
+                                "/health").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
