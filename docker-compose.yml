@@ -1,0 +1,26 @@
+services:
+  rai-backend:
+    image: 'rai-backend-image:latest'
+    build:
+      context: .
+    container_name: 'rai-backend'
+    depends_on:
+      - rai-db
+    environment:
+      - spring.datasource.url=jdbc:mysql://rai-db:3306/rai?createDatabaseIfNotExist=true
+      - spring.datasource.username=root
+      - spring.datasource.password=0000
+      - spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.output.ansi.enabled=ALWAYS
+      - spring.jpa.open-in-view=false
+    ports:
+      - '8080:8080'
+
+  rai-db:
+    image: mysql
+    container_name: rai-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=0000
+    ports:
+      - '3306:3306'
