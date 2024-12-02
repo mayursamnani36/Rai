@@ -2,7 +2,7 @@ name: Rai CICD flow
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "feature/dockerise" ]
   pull_request:
     branches: [ "master" ]
 
