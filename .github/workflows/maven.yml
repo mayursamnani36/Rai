@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - feature/dockerise
   pull_request:
     branches:
       - master
@@ -26,19 +25,18 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/v2.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
       - name: Login to Docker Hub
+        id: docker-hub
         env:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
         run: docker login -u $username -p $password
 
-      - name: Build and Push Docker Image with Docker Compose
+      - name: Build the Docker image
+        id: build-docker-image
         run: |
-          docker-compose build
-          docker-compose push ${{ secrets.DOCKER_USERNAME }}/rai-workflow:latest
+          docker build . -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/rai-workflow:latest
+
+      - name: Push the Docker image
+        id: push-docker-image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/rai-workflow:latest
