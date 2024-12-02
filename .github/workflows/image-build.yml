@@ -1,0 +1,27 @@
+name: Build Docker Image
+on:
+  push:
+    branches:
+      - master
+      - feature/dockerise
+jobs:
+  build:
+    name: push docker image to docker hub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: login to docker hub
+        id: docker-hub
+        env:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker login -u $username -p $password
+      - name: build the docker image
+        id: build-docker-image
+        run: |
+          ls -la 
+          docker build . -f Dockerfile -t mayursamnani36/rai-workflow
+      - name: push the docker image
+        id: push-docker-image
+        run: docker push ${{secrets.DOCKER_USERNAME}}/rai-workflow:latest
