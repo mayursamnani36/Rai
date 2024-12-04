@@ -38,14 +38,14 @@ public final class TaskEntity {
     private String tag;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    private String updatedAt;
     @PrePersist
-    public void prePersist() {createdAt = LocalDateTime.now(); updatedAt = LocalDateTime.now();}
+    public void prePersist() {createdAt = LocalDateTime.now().toString(); updatedAt = LocalDateTime.now().toString();}
     @PreUpdate
-    public void preUpdate() {updatedAt = LocalDateTime.now();}
+    public void preUpdate() {updatedAt = LocalDateTime.now().toString();}
 
     public TaskEntity(TaskEntity task) {
         this.title = task.getTitle();

@@ -5,7 +5,10 @@ services:
       context: .
     container_name: 'rai-backend'
     depends_on:
-      - rai-db
+      rai-db:
+        condition: service_healthy
+      rai-cache:
+        condition: service_started
     environment:
       - spring.datasource.url=jdbc:mysql://rai-db:3306/rai?createDatabaseIfNotExist=true
       - spring.datasource.username=root
@@ -13,6 +16,9 @@ services:
       - spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
       - spring.jpa.hibernate.ddl-auto=update
       - spring.output.ansi.enabled=ALWAYS
+      - spring.cache.type=redis
+      - spring.data.redis.host=rai-cache
+      - spring.data.redis.port=6379
       - spring.jpa.open-in-view=false
     ports:
       - '8080:8080'
@@ -24,3 +30,15 @@ services:
       - MYSQL_ROOT_PASSWORD=0000
     ports:
       - '3306:3306'
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rai-cache:
+    image: redis/redis-stack
+    container_name: rai-cache
+    ports:
+      - '6379:6379'
+      - '8001:8001'
