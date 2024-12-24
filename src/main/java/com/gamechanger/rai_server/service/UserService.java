@@ -1,7 +1,7 @@
 package com.gamechanger.rai_server.service;
 
 import com.gamechanger.rai_server.entity.UserEntity;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.gamechanger.rai_server.utils.UserInfoDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
@@ -9,5 +9,5 @@ public interface UserService extends UserDetailsService {
 
     UserEntity findUserById(Long id);
 
-    UserDetails loadUserByUsername(String username);
+    UserInfoDetails loadUserByUsername(String username);
 }

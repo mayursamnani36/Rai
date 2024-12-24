@@ -7,7 +7,6 @@ import com.gamechanger.rai_server.utils.UserInfoDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public UserInfoDetails loadUserByUsername(String username) {
         try{
             UserEntity user = userRepository.findUserByUserName(username);
             if(user == null){

@@ -49,18 +49,19 @@ public class JwtService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public String generateToken(String username){
+    public String generateToken(String username, Long userId){
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        return createToken(claims, username, userId);
     }
 
-    private String createToken(Map<String, Object> claims, String username) {
+    private String createToken(Map<String, Object> claims, String username, Long userId) {
         Map<String, Object> headers = new HashMap<>();
         headers.put("alg", "HS256");
         headers.put("typ", "JWT");
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
+                .setId(userId.toString())
                 .setHeader(headers)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+ 60000 * 60))

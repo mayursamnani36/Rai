@@ -12,10 +12,12 @@ public class UserInfoDetails implements UserDetails {
 
     private final String name;
     private final String password;
+    private final Long userId;
 
     public UserInfoDetails(UserEntity user) {
         name = user.getUserName();
         password = user.getPassword();
+        userId = user.getId();
     }
 
     @Override
@@ -31,6 +33,10 @@ public class UserInfoDetails implements UserDetails {
     @Override
     public String getUsername() {
         return name;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
     @Override

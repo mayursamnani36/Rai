@@ -6,6 +6,7 @@ import com.gamechanger.rai_server.jwt.JwtResponse;
 import com.gamechanger.rai_server.service.JwtService;
 import com.gamechanger.rai_server.service.UserService;
 import com.gamechanger.rai_server.utils.RequestValidator;
+import com.gamechanger.rai_server.utils.UserInfoDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,10 +61,10 @@ public class UserController {
     public ResponseEntity<String> loginUser(@RequestBody LoginUserDTO loginUserDTO){
         try{
             log.info("LoginUserDTO: {}", loginUserDTO);
-            UserDetails user = userService.loadUserByUsername(loginUserDTO.getUsername());
+            UserInfoDetails user = userService.loadUserByUsername(loginUserDTO.getUsername());
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUserDTO.getUsername(), loginUserDTO.getPassword()));
             if(!authentication.isAuthenticated()) throw new InvalidParameterException("Password is incorrect.");
-            JwtResponse jwtResponse = new JwtResponse( jwtService.generateToken(user.getUsername()));
+            JwtResponse jwtResponse = new JwtResponse( jwtService.generateToken(user.getUsername(), user.getUserId()));
             log.info("Login successful");
             return ResponseEntity.ok(jwtResponse.getToken());
         }
